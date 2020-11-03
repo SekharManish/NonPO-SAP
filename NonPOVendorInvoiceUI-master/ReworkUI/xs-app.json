@@ -1,0 +1,41 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "logout": {
+        "logoutEndpoint": "/do/logout"
+    },
+    "routes": [
+        {
+            "source": "^/workflowruntime/(.*)$",
+            "target": "/$1",
+            "service": "com.sap.bpm.workflow",
+            "endpoint": "workflow_rest_url",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/bpmrulesruntime/(.*)$",
+            "target": "/$1",
+            "service": "com.sap.bpm.rule",
+            "endpoint": "rule_runtime_url",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/CPI/(.*)$",
+            "target": "/$1",
+            "destination": "CPI",
+            "authenticationType": "none"
+        },
+        {
+            "source": "^/docservice/(.*)$",
+            "target": "/$1",
+            "destination": "bpmworkflowruntime_attachments",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^(.*)$",
+            "target": "$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ]
+}

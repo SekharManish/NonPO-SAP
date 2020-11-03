@@ -1,0 +1,85 @@
+ID: NonPOVendorInvoiceUI
+_schema-version: '2.1'
+description: Project for the user interfaces of non PO vendor invoices
+parameters:
+  deploy_mode: html5-repo
+version: 0.0.1
+modules:
+  - name: NonPOVendorInvoiceUI_ui_deployer
+    type: com.sap.html5.application-content
+    path: NonPOVendorInvoiceUI_ui_deployer
+    requires:
+      - name: NonPOVendorInvoiceUI_html5_repo_host
+    build-parameters:
+      requires:
+        - name: StartUI
+          artifacts:
+            - './*'
+          target-path: resources/StartUI
+        - name: taskUI
+          artifacts:
+            - './*'
+          target-path: resources/taskUI
+        - name: ReworkUI
+          artifacts:
+            - './*'
+          target-path: resources/ReworkUI
+  - name: StartUI
+    type: html5
+    path: StartUI
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: Destination
+        parameters:
+          content-target: true 
+  - name: taskUI
+    type: html5
+    path: taskUI
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+  - name: ReworkUI
+    type: html5
+    path: ReworkUI
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+resources:
+  - name: NonPOVendorInvoiceUI_html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: NonPOVendorInvoiceUI_html5_repo_host
+    parameters:
+      service-plan: app-host
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: uaa_NonPOVendorInvoiceUI
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: Destination
+    type: org.cloudfoundry.existing-service
+  - name: wm_workflow
+    type: org.cloudfoundry.existing-service
+  - name: wfm_sdm
+    type: org.cloudfoundry.existing-service
+  - name: wfm_dox
+    type: org.cloudfoundry.existing-service
